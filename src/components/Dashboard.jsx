@@ -1,16 +1,9 @@
+import PageHeader from "./PageHeader"
+
 function Dashboard() {
     return (
     <>
-        <div className="heading flex items-center justify-between mb-6">
-            <div className="left-head">
-                <h1>Dashboard</h1>
-                <p>Current Streak 1 | Best 1 | Last check in 2026-03-29</p>
-            </div>
-            <div className="right-head">
-                <button className="border rounded px-5 py-1">Check In</button>
-            </div>
-        </div>
-        <hr />
+        <PageHeader title="Dashboard" />
         <div className="stats grid grid-cols-4 mt-6 gap-3">
             <div className="skills border rounded p-3 flex flex-col">
                 <h2>Skills Completed</h2>

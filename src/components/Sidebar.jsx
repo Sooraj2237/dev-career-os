@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 function Sidebar() {
     return (
@@ -13,7 +13,7 @@ function Sidebar() {
                 <li className="mt-8 px-6 py-3 text-sm text-gray-500 bg-gray-50 rounded-lg">Tip: Check in daily to build your streak.</li>
             </ul>
         </div>
-    );
+    )
 }
 
-export default Sidebar;
+export default Sidebar
