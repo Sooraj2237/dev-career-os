@@ -43,7 +43,7 @@ function PageHeader({title}) {
 
     return (
     <>
-        <div className="heading flex items-center justify-between mb-6">
+        <div className="page-heading flex items-center justify-between mb-6">
             <div className="left-head">
                 <h1>{title}</h1>
                 <p>Current Streak {streak.current} | Best {streak.best} | Last check in {streak.lastCheckIn}</p>
