@@ -2,6 +2,11 @@ import { Route, Routes } from 'react-router-dom'
 import Header from './components/Header'
 import Sidebar from './components/Sidebar'
 import Dashboard from './components/Dashboard'
+import Skills from './components/Skills'
+import Projects from './components/Projects'
+import Applications from './components/Applications'
+import Notes from './components/Notes'
+import Settings from './components/Settings'
 
 function App() {
 
@@ -16,11 +21,11 @@ function App() {
           <div className="right-part flex-1 p-6">
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/skills" element={<h1 className="text-2xl font-bold">Skills Tracker Coming Soon...</h1>} />
-              <Route path="/projects" element={<h1 className="text-2xl font-bold">Projects Portfolio Coming Soon...</h1>} />
-              <Route path="/applications" element={<h1 className="text-2xl font-bold">Job Applications Coming Soon...</h1>} />
-              <Route path="/notes" element={<h1 className="text-2xl font-bold">Notes Engine Coming Soon...</h1>} />
-              <Route path="/settings" element={<h1 className="text-2xl font-bold">Settings Engine Coming Soon...</h1>} />
+              <Route path="/skills" element={<Skills />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/applications" element={<Applications />} />
+              <Route path="/notes" element={<Notes />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </div>
         </div>
