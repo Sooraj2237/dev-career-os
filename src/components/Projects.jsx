@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useLocation } from "react-router-dom"
 import PageHeader from "./PageHeader"
 
 function Projects() {
@@ -8,7 +9,8 @@ function Projects() {
         return savedProjects ? JSON.parse(savedProjects) : []
     })
 
-    const [query, setQuery] = useState("")
+    const location = useLocation();
+    const [query, setQuery] = useState(location.state?.search || "")
     const [filterStatus, setFilterStatus] = useState("All")
 
     useEffect(() => {
