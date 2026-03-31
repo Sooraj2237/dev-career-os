@@ -16,20 +16,22 @@ function Projects() {
     }, [projects])
 
     const addProject = () => {
-        const projectName = window.prompt("Enter Project Title")
-        const TechStack = window.prompt("Enter Tech Stack")
-        const newProject = {
-            id: crypto.randomUUID(),
-            title: projectName,
-            tech: TechStack,
-            status: "In Progress",
-            repo: "",
-            live: "",
-            notes: "",
-            createdOn: new Date().toLocaleDateString(),
-            updatedOn: new Date().toLocaleDateString()
+        const projectName = window.prompt("Enter Project Title", "").trim()
+        const techStack = window.prompt("Enter Tech Stack", "").trim()
+        if (projectName !== "" && techStack !== "") {
+            const newProject = {
+                id: crypto.randomUUID(),
+                title: projectName,
+                tech: techStack,
+                status: "In Progress",
+                repo: "",
+                live: "",
+                notes: "",
+                createdOn: new Date().toLocaleDateString(),
+                updatedOn: new Date().toLocaleDateString()
+            }
+            setProjects([...projects, newProject])
         }
-        setProjects([...projects, newProject])
     }
 
     const deleteProject = (id) => {
@@ -53,8 +55,8 @@ function Projects() {
         <div className="heading flex justify-between items-center mt-6">
             <div className="left-part">Projects</div>
             <div className="right-part flex gap-3">
-                <input type="text" name="query" className="p-1 border rounded w-40" placeholder="Search Project" onChange={(e) => setQuery(e.target.value)}/>
-                <select name="category" className="p-1 border rounded w-32" defaultValue="All" onChange={(e) => setFilterStatus(e.target.value)}>
+                <input type="text" name="query" className="p-1 border rounded w-40" placeholder="Search Project" value={query} onChange={(e) => setQuery(e.target.value)}/>
+                <select name="category" className="p-1 border rounded w-32" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
                     <option value="All">All</option>
                     <option value="Planned">Planned</option>
                     <option value="In Progress">In Progress</option>
