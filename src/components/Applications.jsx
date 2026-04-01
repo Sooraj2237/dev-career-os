@@ -2,12 +2,10 @@ import { useState, useEffect } from "react"
 import PageHeader from "./PageHeader"
 
 function Applications() {
-
     const [apps, setApps] = useState(() => {
         const savedApps = localStorage.getItem('devOS_apps')
         return savedApps ? JSON.parse(savedApps) : []
     })
-
     const [query, setQuery] = useState('')
     const [filterStatus, setFilterStatus] = useState("All")
 
@@ -33,30 +31,35 @@ function Applications() {
         }
     }
 
-    const deleteApp = (id) => {
-        setApps(apps.filter(app => app.id !== id))
-    }
+    const deleteApp = (id) => setApps(apps.filter(app => app.id !== id))
 
     const updateApp = (id, field, val) => {
         setApps(apps.map(app => app.id === id ? { ...app, [field]: val } : app))
     }
 
     const filteredApps = apps.filter(app => {
-        const matchesSearch = app.company.toLowerCase().includes(query.toLowerCase()) || 
-                              app.role.toLowerCase().includes(query.toLowerCase());
-        const matchesStatus = filterStatus === "All" || app.status === filterStatus;
-        return matchesSearch && matchesStatus;
+        const matchesSearch = app.company.toLowerCase().includes(query.toLowerCase()) ||
+                              app.role.toLowerCase().includes(query.toLowerCase())
+        const matchesStatus = filterStatus === "All" || app.status === filterStatus
+        return matchesSearch && matchesStatus
     })
+
+    const statusStyle = {
+        "Applied":   { bg: '#f0ede6', color: '#5a5040', border: '#d4cbbf' },
+        "Screening": { bg: '#e6edf8', color: '#3a5080', border: '#b8ccec' },
+        "Interview": { bg: '#e8f0e2', color: '#3a5c32', border: '#b4cca8' },
+        "Offer":     { bg: '#e4f2ec', color: '#2a6048', border: '#a8d4bc' },
+        "Rejected":  { bg: '#f5e8e4', color: '#7a3028', border: '#e0b8b0' },
+    }
 
     return (
         <>
-            <PageHeader title="Applications"/>
-            
-            <div className="flex justify-between items-center mt-6">
-                <div className="left-side font-bold text-xl">Application Pipeline</div>
-                <div className="right-side flex flex-wrap gap-3">
-                    <input type="text" className="p-1 border rounded w-40" placeholder="Search Company..." onChange={e => setQuery(e.target.value)} />
-                    <select className="p-1 border rounded w-32" defaultValue="All" onChange={e => setFilterStatus(e.target.value)}>
+            <PageHeader title="Applications" />
+            <div className="flex justify-between items-center mb-5">
+                <h2 className="font-bold text-base" style={{color: '#2d3a28'}}>Application Pipeline</h2>
+                <div className="flex flex-wrap gap-3">
+                    <input type="text" className="border rounded-xl px-4 py-2 text-sm outline-none w-44" style={{borderColor: '#c8d4be', background: '#f8fbf6', color: '#2d3a28'}} placeholder="Search company..." onChange={e => setQuery(e.target.value)} />
+                    <select className="border rounded-xl px-3 py-2 text-sm outline-none" style={{borderColor: '#c8d4be', background: '#f8fbf6', color: '#2d3a28'}} defaultValue="All" onChange={e => setFilterStatus(e.target.value)}>
                         <option value="All">All Status</option>
                         <option value="Applied">Applied</option>
                         <option value="Screening">Screening</option>
@@ -64,49 +67,56 @@ function Applications() {
                         <option value="Offer">Offer</option>
                         <option value="Rejected">Rejected</option>
                     </select>
-                    <button className="border rounded px-5 py-1 bg-gray-900 text-white" onClick={addApp}>+ Add</button>
+                    <button className="px-5 py-2 rounded-xl text-sm font-bold shadow-sm" style={{background: 'linear-gradient(135deg, #6b8f5e 0%, #4a7260 100%)', color: '#f5f0e8'}} onClick={addApp}>+ Add</button>
                 </div>
             </div>
 
-            <div className="grid grid-cols-12 gap-4 p-4 mt-6 bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                <div className="col-span-3">Company</div>
-                <div className="col-span-3">Role</div>
-                <div className="col-span-2">Status</div>
-                <div className="col-span-2">Date / Link</div>
-                <div className="col-span-2 text-center">Action</div>
+            <div className="rounded-2xl overflow-hidden border shadow-sm" style={{borderColor: '#cddcc5'}}>
+                <div className="grid grid-cols-12 gap-4 px-5 py-3 text-xs font-semibold uppercase tracking-wider" style={{background: '#e8f0e2', color: '#6a8060'}}>
+                    <div className="col-span-3">Company</div>
+                    <div className="col-span-3">Role</div>
+                    <div className="col-span-2">Status</div>
+                    <div className="col-span-2">Date / Link</div>
+                    <div className="col-span-2 text-center">Action</div>
+                </div>
+
+                {filteredApps.map((app, idx) => {
+                    const s = statusStyle[app.status] || statusStyle["Applied"]
+                    return (
+                        <div key={app.id} className="grid grid-cols-12 gap-4 px-5 py-4 border-t items-center transition-all" style={{borderColor: '#dde8d5', background: idx % 2 === 0 ? '#fafcf8' : '#f5f8f2'}}>
+                            <div className="col-span-3">
+                                <input type="text" className="font-bold w-full bg-transparent outline-none border-b border-transparent focus:border-gray-300 text-sm" style={{color: '#2d3a28'}} value={app.company} onChange={e => updateApp(app.id, 'company', e.target.value)} />
+                            </div>
+                            <div className="col-span-3">
+                                <input type="text" className="w-full bg-transparent outline-none border-b border-transparent focus:border-gray-300 text-sm" style={{color: '#4a5c40'}} value={app.role} onChange={e => updateApp(app.id, 'role', e.target.value)} />
+                            </div>
+                            <div className="col-span-2">
+                                <select className="border rounded-xl w-full text-xs font-semibold px-2 py-1.5 outline-none" style={{background: s.bg, color: s.color, borderColor: s.border}} value={app.status} onChange={e => updateApp(app.id, 'status', e.target.value)}>
+                                    <option value="Applied">Applied</option>
+                                    <option value="Screening">Screening</option>
+                                    <option value="Interview">Interview</option>
+                                    <option value="Offer">Offer 🎉</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </div>
+                            <div className="col-span-2 flex flex-col gap-1.5">
+                                <input type="date" className="text-xs outline-none bg-transparent border-b border-transparent hover:border-gray-300 pb-0.5 w-full" style={{color: '#6a8060'}} value={app.date} onChange={e => updateApp(app.id, 'date', e.target.value)} />
+                                <input type="text" className="border rounded-lg px-2 py-1 text-xs outline-none" style={{borderColor: '#d0dcc8', background: '#f5f8f2', color: '#4a5c40'}} placeholder="Job URL" value={app.link} onChange={e => updateApp(app.id, 'link', e.target.value)} />
+                            </div>
+                            <div className="col-span-2 flex justify-center">
+                                <button className="px-4 py-1.5 border rounded-xl text-xs font-semibold transition-all" style={{borderColor: '#e0b8b0', color: '#7a3028', background: '#fdf0ee'}} onClick={() => deleteApp(app.id)}>Delete</button>
+                            </div>
+                        </div>
+                    )
+                })}
+
+                {filteredApps.length === 0 && (
+                    <div className="px-5 py-10 text-center text-sm" style={{color: '#8a9e7e'}}>No applications yet. Cast your first seed 🌾</div>
+                )}
             </div>
 
-            <div className="flex flex-col">
-                {filteredApps.map(app => (
-                    <div key={app.id} className="grid grid-cols-12 gap-4 p-4 border-b hover:bg-gray-50 items-center">
-                        <div className="col-span-3">
-                            <input type="text" className="font-bold w-full bg-transparent focus:bg-white border-b border-transparent focus:border-gray-300 outline-none" value={app.company} onChange={e => updateApp(app.id, 'company', e.target.value)} />
-                        </div>
-                        <div className="col-span-3">
-                            <input type="text" className="w-full bg-transparent focus:bg-white border-b border-transparent focus:border-gray-300 outline-none text-sm" value={app.role} onChange={e => updateApp(app.id, 'role', e.target.value)} />
-                        </div>
-                        <div className="col-span-2">
-                            <select className="p-1 border rounded w-full text-sm bg-white" value={app.status} onChange={e => updateApp(app.id, 'status', e.target.value)}>
-                                <option value="Applied">Applied</option>
-                                <option value="Screening">Screening</option>
-                                <option value="Interview">Interview</option>
-                                <option value="Offer">Offer 🎉</option>
-                                <option value="Rejected">Rejected</option>
-                            </select>
-                        </div>
-                        <div className="col-span-2 flex flex-col gap-1 text-sm">
-                            <input type="date" className="text-gray-500 text-xs border-b border-transparent hover:border-gray-300 focus:border-blue-500 focus:bg-white bg-transparent outline-none w-full pb-1" value={app.date} onChange={e => updateApp(app.id, 'date', e.target.value)} />
-                            <input type="text" className="w-full border rounded px-2 py-1 text-xs" placeholder="Job URL" value={app.link} onChange={e => updateApp(app.id, 'link', e.target.value)} />
-                        </div>
-                        <div className="col-span-2 flex justify-center">
-                            <button className="px-4 py-1 border border-red-200 text-red-500 hover:bg-red-50 rounded text-sm" onClick={() => deleteApp(app.id)}>Delete</button>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            
-            <p className="mt-4 text-sm text-gray-500 text-center font-medium">
-                Aim for 5-10 quality applications per week. Iteration is key.
+            <p className="mt-4 text-xs text-center font-medium" style={{color: '#8a9e7e'}}>
+                🌻 Aim for 5–10 quality applications per week. Iteration is key.
             </p>
         </>
     )
