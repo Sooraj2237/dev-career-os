@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://Sooraj2237.github.io/dev-career-os",
+  "homepage": "https://sooraj2237.github.io/dev-career-os",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
