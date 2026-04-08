@@ -2,8 +2,7 @@
 
 A comprehensive, frontend-driven dashboard built to help developers track their journey from learning to landing a job. It acts as a personal operating system to manage skills, track project progress, organize job applications, and maintain a daily learning streak.
 
-![Developer Career OS](https://via.placeholder.com/800x400.png?text=Developer+Career+OS+Dashboard)
-*(Note: Replace this placeholder link with a screenshot of your actual dashboard once deployed!)*
+![Developer Career OS](./public/image.png)
 
 ## 🚀 Features
 
